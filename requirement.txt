@@ -6,7 +6,7 @@ python-dotenv==1.0.1
 
 
 # Web Scraping
-cloudscraper
+cloudscraper==1.2.71
 beautifulsoup4==4.12.3
 lxml==5.1.0
 
@@ -24,6 +24,7 @@ urllib3==2.1.0
 pandas==2.1.4
 
 numpy==1.26.3
+
 
 
 
