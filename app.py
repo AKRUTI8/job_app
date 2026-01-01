@@ -10,9 +10,9 @@ import streamlit as st
 # Add src to path
 sys.path.append('src')
 
-from job_portal.job_embedding_pipeline import JobEmbeddingPipeline
-from job_portal.resume_matching_pipeline import ResumeMatchingPipeline
-from job_portal.elasticsearch_manager import ElasticsearchManager
+from job_embedding_pipeline import JobEmbeddingPipeline
+from resume_matching_pipeline import ResumeMatchingPipeline
+from elasticsearch_manager import ElasticsearchManager
 
 # Load environment variables
 
@@ -374,3 +374,4 @@ with tab3:
 st.divider()
 
 st.caption("🎯 Job Search & Resume Matching System | Powered by OpenAI & Elasticsearch")
+
