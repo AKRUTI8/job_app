@@ -80,8 +80,8 @@ ELASTICSEARCH_URL=http://localhost:9200
 
 # Tabs
 tab1, tab2, tab3 = st.tabs([
-    "📋 Process Jobs", 
     "🎯 Find Job Matches",
+    "📋 Process Jobs",
     "🔍 Search Jobs"
 ])
 
@@ -374,6 +374,7 @@ with tab3:
 st.divider()
 
 st.caption("🎯 Job Search & Resume Matching System | Powered by OpenAI & Elasticsearch")
+
 
 
 
