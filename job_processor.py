@@ -9,7 +9,7 @@ from typing import List, Dict, Optional
 from datetime import datetime
 import hashlib
 
-from cloudscraper import cloudscraper
+import cloudscraper
 from bs4 import BeautifulSoup
 from openai import OpenAI
 from elasticsearch import Elasticsearch
@@ -188,3 +188,4 @@ Return only the JSON object, no additional text."""
             json.dump(jobs, f, indent=2, ensure_ascii=False)
 
         print(f"✓ Saved {len(jobs)} jobs to {output_file}")
+
