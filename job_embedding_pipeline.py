@@ -16,7 +16,7 @@ class JobEmbeddingPipeline:
     def __init__(self, openai_api_key: str, es_url: str = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io/"):
         """Initialize pipeline components"""
         self.job_processor = JobProcessor(openai_api_key, es_url)
-        self.es_manager = ElasticsearchManager(es_url)
+        self.es_manager = ElasticsearchManager()
     
     def process_and_index_jobs(self, input_file: str, index_name: str = "job_embeddings",
                                max_jobs: Optional[int] = None, 
@@ -140,4 +140,7 @@ class JobEmbeddingPipeline:
         print(f"✓ Found {len(results)} results")
 
         return results
+    
 
+
+    
