@@ -28,8 +28,8 @@ st.set_page_config(
 if 'initialized' not in st.session_state:
     st.session_state.initialized = False
     st.session_state.es_connected = False
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-    ELASTICSEARCH_URL = st.secrets["ELASTICSEARCH_URL"]
+    OPENAI_API_KEY = "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"
+    ELASTICSEARCH_URL = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io/"
     st.session_state.resume_processed = False
     st.session_state.current_resume_id = None
 
@@ -374,4 +374,5 @@ with tab3:
 st.divider()
 
 st.caption("🎯 Job Search & Resume Matching System | Powered by OpenAI & Elasticsearch")
+
 
