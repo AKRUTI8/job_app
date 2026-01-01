@@ -8,8 +8,8 @@ import json
 from typing import List, Dict, Optional
 from datetime import datetime
 
-from job_portal.resume_processor import ResumeProcessor
-from job_portal.elasticsearch_manager import ElasticsearchManager
+from resume_processor import ResumeProcessor
+from elasticsearch_manager import ElasticsearchManager
 
 
 class ResumeMatchingPipeline:
@@ -200,4 +200,5 @@ class ResumeMatchingPipeline:
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
         
+
         print(f"✓ Exported {len(matches)} matches to {output_file}")
