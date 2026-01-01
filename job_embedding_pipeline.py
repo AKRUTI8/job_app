@@ -6,8 +6,8 @@ Complete pipeline for processing jobs and creating embeddings
 import time
 from typing import List, Dict, Optional
 
-from job_portal.job_processor import JobProcessor
-from job_portal.elasticsearch_manager import ElasticsearchManager
+from job_processor import JobProcessor
+from elasticsearch_manager import ElasticsearchManager
 
 
 class JobEmbeddingPipeline:
@@ -138,4 +138,5 @@ class JobEmbeddingPipeline:
         )
         
         print(f"✓ Found {len(results)} results")
+
         return results
