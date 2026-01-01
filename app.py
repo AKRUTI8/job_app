@@ -5,7 +5,7 @@ Streamlit UI for Job Search & Resume Matching System
 import os
 import sys
 import streamlit as st
-from dotenv import load_dotenv
+
 
 # Add src to path
 sys.path.append('src')
@@ -15,7 +15,7 @@ from job_portal.resume_matching_pipeline import ResumeMatchingPipeline
 from job_portal.elasticsearch_manager import ElasticsearchManager
 
 # Load environment variables
-load_dotenv()
+
 
 # Page config
 st.set_page_config(
@@ -28,8 +28,8 @@ st.set_page_config(
 if 'initialized' not in st.session_state:
     st.session_state.initialized = False
     st.session_state.es_connected = False
-    st.session_state.openai_api_key = os.getenv("OPENAI_API_KEY", "")
-    st.session_state.es_url = os.getenv("ELASTICSEARCH_URL", "http://localhost:9200")
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    ELASTICSEARCH_URL = st.secrets["ELASTICSEARCH_URL"]
     st.session_state.resume_processed = False
     st.session_state.current_resume_id = None
 
@@ -372,4 +372,5 @@ with tab3:
 
 # Footer
 st.divider()
+
 st.caption("🎯 Job Search & Resume Matching System | Powered by OpenAI & Elasticsearch")
