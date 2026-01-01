@@ -35,7 +35,12 @@ class JobProcessor:
                            - paraphrase-multilingual-MiniLM-L12-v2 (multilingual)
         """
         self.client = OpenAI(api_key=openai_api_key)
-        self.es = Elasticsearch(es_url)
+        cloud_url = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io:443"
+        api_key = "b1U1SmVKc0JVR0t1YnVPbU96WUM6ZDlWakRodWY5WERPSV92c3FFQTRUdw=="
+        self.es = Elasticsearch(
+           cloud_url,
+            api_key=api_key
+        )
         self.scraper = cloudscraper.create_scraper(
             browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
         )
@@ -198,7 +203,6 @@ Return only the JSON object, no additional text."""
                 print(f"  ✓ {job_info['job_title']}")
                 
                 time.sleep(1)  # Rate limiting
-            
             return processed_jobs
             
         except Exception as e:
@@ -211,4 +215,3 @@ Return only the JSON object, no additional text."""
             json.dump(jobs, f, indent=2, ensure_ascii=False)
 
         print(f"✓ Saved {len(jobs)} jobs to {output_file}")
-
