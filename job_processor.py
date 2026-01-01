@@ -20,7 +20,7 @@ from sentence_transformers import SentenceTransformer
 class JobProcessor:
     """Process job listings: scrape, extract info, generate embeddings"""
     
-    def __init__(self, openai_api_key: str, es_url: str = "http://localhost:9200", 
+    def __init__(self, openai_api_key: str, es_url: str = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io/", 
                  embedding_model: str = "all-MiniLM-L6-v2"):
         """
         Initialize with API keys and connections
@@ -211,3 +211,4 @@ Return only the JSON object, no additional text."""
             json.dump(jobs, f, indent=2, ensure_ascii=False)
 
         print(f"✓ Saved {len(jobs)} jobs to {output_file}")
+
