@@ -166,8 +166,8 @@ with tab2:
         if st.button("🚀 Find Matching Jobs", type="primary"):
             with st.spinner("Processing resume and finding matches..."):
                 try:
-                    from job_portal.resume_processor import ResumeProcessor
-                    from job_portal.elasticsearch_manager import ElasticsearchManager
+                    from resume_processor import ResumeProcessor
+                    from elasticsearch_manager import ElasticsearchManager
                     
                     # Process resume without storing
                     resume_processor = ResumeProcessor(st.session_state.openai_api_key)
@@ -374,6 +374,7 @@ with tab3:
 st.divider()
 
 st.caption("🎯 Job Search & Resume Matching System | Powered by OpenAI & Elasticsearch")
+
 
 
 
