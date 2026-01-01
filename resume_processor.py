@@ -11,15 +11,28 @@ import hashlib
 
 import PyPDF2
 from openai import OpenAI
+from sentence_transformers import SentenceTransformer
 
 
 class ResumeProcessor:
     """Process resume PDFs: extract text, parse info, generate embeddings"""
     
-    def __init__(self, openai_api_key: str):
-        """Initialize with OpenAI API key"""
+    def __init__(self, openai_api_key: str, embedding_model: str = "all-MiniLM-L6-v2"):
+        """
+        Initialize with OpenAI API key for text extraction and embedding model
+        
+        Args:
+            openai_api_key: OpenAI API key for resume parsing
+            embedding_model: Sentence transformer model name (default: all-MiniLM-L6-v2)
+                           Other options: 
+                           - all-mpnet-base-v2 (higher quality, slower)
+                           - all-MiniLM-L12-v2 (balanced)
+                           - paraphrase-multilingual-MiniLM-L12-v2 (multilingual)
+        """
         self.client = OpenAI(api_key=openai_api_key)
-        self.embedding_model = "text-embedding-3-small"
+        print(f"🤖 Loading sentence transformer model: {embedding_model}")
+        self.embedding_model = SentenceTransformer(embedding_model)
+        print(f"✓ Model loaded successfully")
     
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """Extract text content from PDF file"""
@@ -132,18 +145,22 @@ Return only the JSON object, no additional text."""
             }
     
     def generate_embedding(self, text: str) -> Optional[list]:
-        """Generate embedding for text"""
+        """Generate embedding for text using sentence transformers"""
         try:
-            max_chars = 30000
+            # Sentence transformers can handle longer texts, but we'll still limit for consistency
+            max_chars = 50000
             if len(text) > max_chars:
                 text = text[:max_chars]
             
-            response = self.client.embeddings.create(
-                model=self.embedding_model,
-                input=text
+            # Generate embedding using sentence transformers
+            embedding = self.embedding_model.encode(
+                text,
+                convert_to_tensor=False,
+                show_progress_bar=False
             )
             
-            return response.data[0].embedding
+            # Convert numpy array to list for JSON serialization
+            return embedding.tolist()
             
         except Exception as e:
             print(f"❌ Error generating embedding: {e}")
