@@ -14,20 +14,40 @@ from bs4 import BeautifulSoup
 from openai import OpenAI
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
+from sentence_transformers import SentenceTransformer
 
 
 class JobProcessor:
     """Process job listings: scrape, extract info, generate embeddings"""
     
-    def __init__(self, openai_api_key: str, es_url: str = "http://localhost:9200"):
-        """Initialize with API keys and connections"""
+    def __init__(self, openai_api_key: str, es_url: str = "http://localhost:9200", 
+                 embedding_model: str = "all-MiniLM-L6-v2"):
+        """
+        Initialize with API keys and connections
+        
+        Args:
+            openai_api_key: OpenAI API key for job info extraction
+            es_url: Elasticsearch URL
+            embedding_model: Sentence transformer model name (default: all-MiniLM-L6-v2)
+                           Other options: 
+                           - all-mpnet-base-v2 (higher quality, 768 dims)
+                           - all-MiniLM-L12-v2 (balanced, 384 dims)
+                           - paraphrase-multilingual-MiniLM-L12-v2 (multilingual)
+        """
         self.client = OpenAI(api_key=openai_api_key)
         self.es = Elasticsearch(es_url)
         self.scraper = cloudscraper.create_scraper(
             browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
         )
-        self.embedding_model = "text-embedding-3-small"
-        self.embedding_dimensions = 1536
+        
+        # Load sentence transformer model
+        print(f"🤖 Loading sentence transformer model: {embedding_model}")
+        self.embedding_model = SentenceTransformer(embedding_model)
+        print(f"✓ Model loaded successfully")
+        
+        # Get embedding dimensions from the model
+        self.embedding_dimensions = self.embedding_model.get_sentence_embedding_dimension()
+        print(f"📊 Embedding dimensions: {self.embedding_dimensions}")
         
     def scrape_job_page(self, url: str) -> str:
         """Scrape text content from a job posting URL"""
@@ -122,19 +142,22 @@ Return only the JSON object, no additional text."""
             }
     
     def generate_embedding(self, text: str) -> Optional[List[float]]:
-        """Generate embedding for text"""
+        """Generate embedding for text using sentence transformers"""
         try:
             # Truncate if too long
-            max_chars = 30000
+            max_chars = 50000
             if len(text) > max_chars:
                 text = text[:max_chars]
             
-            response = self.client.embeddings.create(
-                model=self.embedding_model,
-                input=text
+            # Generate embedding using sentence transformers
+            embedding = self.embedding_model.encode(
+                text,
+                convert_to_tensor=False,
+                show_progress_bar=False
             )
             
-            return response.data[0].embedding
+            # Convert numpy array to list for JSON serialization
+            return embedding.tolist()
             
         except Exception as e:
             print(f"Error generating embedding: {e}")
@@ -188,4 +211,3 @@ Return only the JSON object, no additional text."""
             json.dump(jobs, f, indent=2, ensure_ascii=False)
 
         print(f"✓ Saved {len(jobs)} jobs to {output_file}")
-
