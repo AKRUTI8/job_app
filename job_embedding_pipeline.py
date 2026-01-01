@@ -13,7 +13,7 @@ from elasticsearch_manager import ElasticsearchManager
 class JobEmbeddingPipeline:
     """Complete pipeline for job processing and embedding"""
     
-    def __init__(self, openai_api_key: str, es_url: str = "http://localhost:9200"):
+    def __init__(self, openai_api_key: str, es_url: str = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io/"):
         """Initialize pipeline components"""
         self.job_processor = JobProcessor(openai_api_key, es_url)
         self.es_manager = ElasticsearchManager(es_url)
@@ -140,3 +140,4 @@ class JobEmbeddingPipeline:
         print(f"✓ Found {len(results)} results")
 
         return results
+
