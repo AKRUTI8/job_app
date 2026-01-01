@@ -15,7 +15,12 @@ class ElasticsearchManager:
     
     def __init__(self, es_url: str = "http://localhost:9200", embedding_dims: int = 1536):
         """Initialize Elasticsearch connection"""
-        self.es = Elasticsearch(es_url)
+        cloud_url = "https://41590c53d1ad492d8c80599d2beaf382.us-central1.gcp.cloud.es.io:443"
+        api_key = "b1U1SmVKc0JVR0t1YnVPbU96WUM6ZDlWakRodWY5WERPSV92c3FFQTRUdw=="
+        self.es = Elasticsearch(
+           cloud_url,
+            api_key=api_key
+        )
         self.embedding_dims = embedding_dims
     
     def ping(self) -> bool:
@@ -306,3 +311,4 @@ class ElasticsearchManager:
             "document_count": count['count'],
             "size_mb": stats['indices'][index_name]['total']['store']['size_in_bytes'] / (1024*1024)
         }
+    
